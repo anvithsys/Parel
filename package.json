@@ -1,0 +1,44 @@
+{
+  "name": "parallel-workspaces",
+  "version": "0.1.0",
+  "description": "Isolated browser workspaces for AI agents — Windows-first desktop tool",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron dist/apps/desktop/main.js",
+    "dev": "npm run build && electron dist/apps/desktop/main.js",
+    "typecheck": "tsc --noEmit",
+    "control:google": "npm run build && node dist/apps/desktop/control-test.js google",
+    "control:youtube": "npm run build && node dist/apps/desktop/control-test.js youtube",
+    "control:open-google": "npm run build && node dist/apps/desktop/control-test.js open-google",
+    "control:open-youtube": "npm run build && node dist/apps/desktop/control-test.js open-youtube"
+  },
+  "keywords": [
+    "electron",
+    "workspace",
+    "browser",
+    "ai-agent",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^42.3.0",
+    "playwright": "^1.60.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "concurrently": "^10.0.0",
+    "cross-env": "^10.1.0",
+    "electron-builder": "^26.8.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14",
+    "wait-on": "^9.0.10"
+  }
+}
