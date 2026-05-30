@@ -80,6 +80,28 @@ http://localhost:9222
 
 ## Using With OpenClaw
 
+### 30-Second Setup
+
+1. Start Parel:
+
+```bash
+npm run start
+```
+
+2. In the Parel controller panel, click **Copy CDP URL**.
+
+3. In OpenClaw, choose remote CDP, custom CDP, or attach existing browser mode.
+
+4. Paste:
+
+```txt
+http://localhost:9222
+```
+
+That is it. OpenClaw should now operate inside Parel's dedicated Chrome workspace instead of launching or controlling your normal browser.
+
+### Manual Setup
+
 Start Parel first:
 
 ```bash

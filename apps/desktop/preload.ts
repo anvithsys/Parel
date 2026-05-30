@@ -7,4 +7,7 @@ contextBridge.exposeInMainWorld("parallel", {
   runSmokeTest: (task: "google" | "youtube", query: string) => {
     return ipcRenderer.invoke("run-smoke-test", task, query);
   },
+  copyText: (text: string) => {
+    return ipcRenderer.invoke("copy-text", text);
+  },
 });

@@ -4,7 +4,7 @@
  * Electron controller for a dedicated real Chrome workspace.
  */
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, clipboard, ipcMain } from "electron";
 import * as path from "path";
 import { ChromeLauncher, type ChromeLaunchResult } from "../../packages/chrome-launcher";
 import {
@@ -223,9 +223,12 @@ function createMainWindow(): void {
         .ok { color: #0f766e; font-weight: 700; }
         .bad { color: #b42318; font-weight: 700; }
         .actions { display: flex; gap: 8px; margin-top: 10px; }
+        .copy-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+        code { flex: 1; min-width: 0; background: #f1f5f2; padding: 9px; border-radius: 6px; font-size: 12px; word-break: break-all; }
         input { flex: 1; min-width: 0; padding: 10px; border: 1px solid #c9d1c8; border-radius: 6px; font-size: 14px; }
         button { padding: 10px 12px; border: 1px solid #0f766e; border-radius: 6px; background: #0f766e; color: #fff; font-weight: 700; cursor: pointer; }
         button.secondary { background: #fff; color: #0f766e; }
+        button.small { padding: 8px 10px; font-size: 12px; }
       </style>
     </head>
     <body>
@@ -239,6 +242,11 @@ function createMainWindow(): void {
           <div class="panel wide"><div class="label">Current action</div><div id="action" class="value">None</div></div>
           <div class="panel wide"><div class="label">Page</div><div id="page" class="value"></div></div>
           <div class="panel wide"><div class="label">Last error</div><div id="error" class="value">None</div></div>
+          <div class="panel wide">
+            <div class="label">Agent setup</div>
+            <div class="copy-row"><code>http://localhost:9222</code><button id="copy-cdp" class="small">Copy CDP URL</button></div>
+            <div class="copy-row"><code>http://localhost:9222/json/version</code><button id="copy-version" class="small secondary">Copy version URL</button></div>
+          </div>
           <div class="panel wide">
             <div class="label">Smoke test</div>
             <div class="actions">
@@ -271,6 +279,8 @@ function createMainWindow(): void {
         });
         document.getElementById('youtube').addEventListener('click', () => window.parallel.runSmokeTest('youtube', ids.query.value));
         document.getElementById('google').addEventListener('click', () => window.parallel.runSmokeTest('google', ids.query.value));
+        document.getElementById('copy-cdp').addEventListener('click', () => window.parallel.copyText('http://localhost:9222'));
+        document.getElementById('copy-version').addEventListener('click', () => window.parallel.copyText('http://localhost:9222/json/version'));
       </script>
     </body>
     </html>
@@ -292,6 +302,11 @@ ipcMain.handle("run-smoke-test", async (_event, task: "google" | "youtube", quer
     });
     throw error;
   }
+});
+
+ipcMain.handle("copy-text", (_event, text: string) => {
+  clipboard.writeText(text);
+  return true;
 });
 
 app.whenReady().then(async () => {
